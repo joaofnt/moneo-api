@@ -1,0 +1,29 @@
+services:
+  oracle-xe:
+    image: gvenzl/oracle-xe:18.4.0-slim
+    container_name: oracle-xe
+    ports:
+      - "8081:8080"
+      - "5005:5005"
+    environment:
+      ORACLE_PASSWORD: SuaSenha123
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+
+  moneo-api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: moneo-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - oracle-xe
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@oracle-xe:1521:XE
+      - SPRING_DATASOURCE_USERNAME=system
+      - SPRING_DATASOURCE_PASSWORD=SuaSenha123
+
+volumes:
+  oracle-data:
