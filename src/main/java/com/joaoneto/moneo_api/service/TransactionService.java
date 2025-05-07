@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.joaoneto.moneo_api.model.Transaction;
+import com.joaoneto.moneo_api.model.Transactions;
 import com.joaoneto.moneo_api.model.User;
 import com.joaoneto.moneo_api.repository.TransactionRepository;
 
@@ -20,31 +20,31 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
 
 
-    public Transaction  create( Transaction tx){
+    public Transactions  create( Transactions tx){
          return transactionRepository.save(tx);
     }
 
-    public Page<Transaction> listByTransactionByUser(User user, Pageable pageable){
+    public Page<Transactions> listByTransactionByUser(User user, Pageable pageable){
         return transactionRepository.findByUser(user, pageable);
     }
 
-    public  Optional<Transaction> findById(Long id){
+    public  Optional<Transactions> findById(Long id){
         return transactionRepository.findById(id);
     }
 
-    public Transaction Update(Transaction tx, Long id){
-        Transaction exist = findById(id).orElseThrow();
+    public Transactions Update(Transactions tx, Long id){
+        Transactions exist = findById(id).orElseThrow();
         exist.setAmount(tx.getAmount());
         exist.setCategory(tx.getCategory());
-        exist.setDate(tx.getDate());
+        exist.setActualDate(tx.getActualDate());
         exist.setDescription(tx.getDescription());
-        exist.setType(tx.getType());
+        exist.setTransactionType(tx.getTransactionType());
         exist.setUser(tx.getUser());
         return transactionRepository.save(exist);
     }
 
     public void deleteById(Long id) {
-        Transaction tx = transactionRepository.findById(id)
+        Transactions tx = transactionRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Transaction not found: " + id));
         transactionRepository.delete(tx);
     }

@@ -18,12 +18,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "transaction")
+@Table(name = "transactions")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor 
-public class Transaction {
+public class Transactions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,10 +32,10 @@ public class Transaction {
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    private TransactionType type;
+    private TransactionType transactionType;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDate actualDate;
     
     private String description;
     

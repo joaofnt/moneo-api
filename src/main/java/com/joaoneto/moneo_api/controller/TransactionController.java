@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.joaoneto.moneo_api.model.Transaction;
+import com.joaoneto.moneo_api.model.Transactions;
 import com.joaoneto.moneo_api.service.TransactionService;
 
 @RestController
@@ -21,8 +21,8 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<Transaction> save(@RequestBody Transaction transaction){
-       Transaction saved = transactionService.create(transaction);
+    public ResponseEntity<Transactions> save(@RequestBody Transactions transaction){
+       Transactions saved = transactionService.create(transaction);
         return  ResponseEntity.status(HttpStatus.CREATED)
         .body(saved);
     } 

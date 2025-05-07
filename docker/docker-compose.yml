@@ -1,29 +1,39 @@
+version: '3.8'
+
 services:
-  oracle-xe:
-    image: gvenzl/oracle-xe:18.4.0-slim
-    container_name: oracle-xe
-    ports:
-      - "8081:8080"
-      - "5005:5005"
+  postgres:
+    image: postgres:latest
+    container_name: postgresmoneo
     environment:
-      ORACLE_PASSWORD: SuaSenha123
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: moneoApi            # cria o DB “teste” automaticamente
     volumes:
-      - oracle-data:/opt/oracle/oradata
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - backend
+    ports:
+      - "5432:5432"
 
   moneo-api:
     build:
       context: ..
       dockerfile: Dockerfile
     container_name: moneo-api
-    ports:
-      - "8080:8080"
     depends_on:
-      - oracle-xe
+      - postgres
+    ports:
+      - "8080:8080"   # API
+      - "5005:5005"   # debug remoto
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@oracle-xe:1521:XE
-      - SPRING_DATASOURCE_USERNAME=system
-      - SPRING_DATASOURCE_PASSWORD=SuaSenha123
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/moneoApi
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 123456
+    networks:
+      - backend
 
 volumes:
-  oracle-data:
+  postgres-data:
+
+networks:
+  backend:
